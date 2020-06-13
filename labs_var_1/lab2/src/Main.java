@@ -1,5 +1,3 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.Scanner;
 
 class Creature{
@@ -8,10 +6,6 @@ class Creature{
 
 class Snake extends Creature implements Wriggle{
 
-    public void creep() {
-        System.out.println("I can't creep!");
-    }
-
     public void whoAmI() {
         System.out.println("I'm a snake!");
     }
@@ -19,6 +13,12 @@ class Snake extends Creature implements Wriggle{
     public void wriggle() {
         System.out.println("I can wriggle");
     }
+
+    @Override
+    public void creep() {
+        System.out.println("I can't creep!");
+    }
+
 }
 
 class Dog extends Creature implements Creep{
@@ -43,24 +43,26 @@ interface Wriggle extends Creep{
 
 public class Main {
 
-    public static void main(String[] args) {
-
-        Scanner scan = new Scanner(System.in);
-        int a = scan.nextInt();
-        Creep[] creep = new Creep[a];
-        for (int i = 0; i < a; i++){
-            if (i%2 == 0){
-                Dog dog = new Dog();
-                dog.creep();
-                dog.whoAmI();
+    public static void main(String[] args) throws Exception {
+            Scanner scan = new Scanner(System.in);
+            int a = scan.nextInt();
+            Creep[] creep = new Creep[a];
+            for (int i = 0; i < a; i++) {
+                if (i % 2 == 0) {
+                    Dog dog = new Dog();
+                    creep[i] = dog;
+                } else {
+                    Snake snake = new Snake();
+                    creep[i] = snake;
+                }
             }
-            else{
-                Snake snake = new Snake();
-                snake.creep();
-                snake.whoAmI();
-                snake.wriggle();
+            for (int i = 0; i < a; i++) {
+                creep[i].whoAmI();
+                if (creep[i] instanceof Dog) {
+                    ((Dog) creep[i]).creep();
+                } else if (creep[i] instanceof Snake) {
+                    ((Snake) creep[i]).wriggle();
+                }
             }
         }
-        
-    }
 }
